@@ -4,11 +4,13 @@ import nltk
 import math
 
 
+# 利用贝叶斯公式计算属于两种类别的可能性，选取可能性大的那个作为结果
 def bayes(input_txt):
     possibility_pos = 0
     possibility_neg = 0
     for word in input_txt:
         if word in pos_word_dic.keys() and word in neg_word_dic.keys():
+            # 因为两个label的训练数据数量相同，因此不需要乘label的概率。使用log加快计算并防止下溢
             possibility_pos += math.log(pos_freq_dic[word])
             possibility_neg += math.log(neg_freq_dic[word])
             # print('poss_pos: ', possibility_pos)
@@ -33,7 +35,7 @@ test_pos_path = test_path + '/pos/'
 test_neg_path = test_path + '/neg/'
 
 print('reading texts......')
-
+# 读取文件
 pos_files = [pos_path + x for x in filter(lambda x: x.endswith('.txt'), os.listdir(pos_path))]
 neg_files = [neg_path + x for x in filter(lambda x: x.endswith('.txt'), os.listdir(neg_path))]
 test_pos_files = [test_pos_path + x for x in filter(lambda x: x.endswith('.txt'), os.listdir(test_pos_path))]
